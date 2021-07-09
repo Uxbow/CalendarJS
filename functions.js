@@ -3,18 +3,24 @@ let calendar = document.getElementById('CalendarContainer');
 let weekdays = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi','samedi', 'dimanche'];
 let months = ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai','Juin',
                 'Juillet','Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
-let myCalendarBlocks = document.querySelectorAll('.calendarDay');
+let calendarDayDigit ;
 const calendarLeftArrow = document.getElementById('CalendarLeftArrow');
 const calendarRightArrow = document.getElementById('CalendarRightArrow');
 const eventDatesList = document.querySelectorAll('.calendarDayContainer svg');
 const selectedDaysCircles = document.querySelectorAll('.calendarCircle');
 let availableCalendarDatesIndexes = [];
+
+
+const calendarBody = document.getElementById('CalendarBody');
+
+
+
 loadCalendar(0);
 
 calendarLeftArrow.addEventListener('click', ()=>{
     if(monthReference>0) {
         monthReference = +monthReference -1;
-        for(myCalendarBlock of myCalendarBlocks){
+        for(myCalendarBlock of calendarDayDigit){
             myCalendarBlock.parentElement.classList.remove('selectedDate');
             myCalendarBlock.classList.remove('available');
         }
@@ -26,7 +32,7 @@ calendarLeftArrow.addEventListener('click', ()=>{
 });
 calendarRightArrow.addEventListener('click', ()=>{
     monthReference = +monthReference +1;
-    for(myCalendarBlock of myCalendarBlocks){
+    for(myCalendarBlock of calendarDayDigit){
         myCalendarBlock.parentElement.classList.remove('selectedDate');
         myCalendarBlock.classList.remove('available');
     }
@@ -37,12 +43,12 @@ calendarRightArrow.addEventListener('click', ()=>{
 });
 
 function updateAvailableDate(dates){
-    //console.log(myCalendarBlocks.length);
-    for (i=0 ; i< myCalendarBlocks.length ; i++){
-        myCalendarBlocks[i].removeEventListener('click',toggleSelection);
+    //console.log(calendarDayDigit.length);
+    for (i=0 ; i< calendarDayDigit.length ; i++){
+        calendarDayDigit[i].removeEventListener('click',toggleSelection);
     }
     for (i=0 ; i< dates.length ; i++){
-        myCalendarBlocks[dates[i]].addEventListener('click',toggleSelection);
+        calendarDayDigit[dates[i]].addEventListener('click',toggleSelection);
 
     }
     //console.log(document.querySelectorAll('.available').length);
@@ -144,19 +150,39 @@ function loadCalendar(monthOffset){
 
     // console.log('---- NEXT MONTH-----');
     // console.log(`Number of Days of next month is : ${numberOfDaysOfNextMonth}`);
-    // console.log(`First Day of the month is ${firstDayNextMonth}`);
-
-
+    // console.log(`First Day of the month is ${firstDayNextMonth}`)
     //Last month if overlapping
+
+
+
+    //CREATING BLOCKS DYNAMICALLY
+    for(i=0 ; i< 42; i++){
+        let dateBlock=document.createElement('div');
+        dateBlock.style.display = "inline-flex";
+        dateBlock.innerHTML= `
+        <div class="calendarCircle">
+        <div class="calendarDay"></div>
+        <svg width="5" height="5" viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="2.5" cy="2.5" r="2.5"/>
+        </svg>
+        </div>
+        `;
+        dateBlock.classList.add('calendarDayContainer');
+        calendarBody.appendChild(dateBlock);
+    }
+
+
+    //ADDING BLOCKS DAYS VALUE
+    calendarDayDigit = document.querySelectorAll('.calendarDay');
     for (i = 0; i < referenceIndex ; i++){
-            myCalendarBlocks[i].innerText = numberOfDaysOfLastMonth-(referenceIndex-1)+i;
+            calendarDayDigit[i].innerText = numberOfDaysOfLastMonth-(referenceIndex-1)+i;
     }
     //this month
 
     let j = 0;
     for (let i= referenceIndex; i <numberOfDaysInMonth+referenceIndex ; i++){
-            myCalendarBlocks[i].innerText = 1 + j;
-            myCalendarBlocks[i].classList.add('available');
+            calendarDayDigit[i].innerText = 1 + j;
+            calendarDayDigit[i].classList.add('available');
             availableCalendarDatesIndexes[j]=i;
             
             console.log(`index: ${j}, valeur : ${i} `);
@@ -166,8 +192,8 @@ function loadCalendar(monthOffset){
     console.log(`---------`);
     //nextMonth
     let k = 0;
-    for (let i = numberOfDaysInMonth+referenceIndex ; i < myCalendarBlocks.length; i++){
-        myCalendarBlocks[i].innerText = 1 + k;
+    for (let i = numberOfDaysInMonth+referenceIndex ; i < calendarDayDigit.length; i++){
+        calendarDayDigit[i].innerText = 1 + k;
         k++;
     }
 
