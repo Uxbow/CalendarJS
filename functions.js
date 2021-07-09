@@ -3,12 +3,11 @@ let calendar = document.getElementById('CalendarContainer');
 let weekdays = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi','samedi', 'dimanche'];
 let months = ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai','Juin',
                 'Juillet','Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
-let calendarDayDigit ;
+let calendarDayDigit, selectedDaysCircles;
+;
 const calendarLeftArrow = document.getElementById('CalendarLeftArrow');
 const calendarRightArrow = document.getElementById('CalendarRightArrow');
 const eventDatesList = document.querySelectorAll('.calendarDayContainer svg');
-const selectedDaysCircles = document.querySelectorAll('.calendarCircle');
-let availableCalendarDatesIndexes = [];
 
 
 const calendarBody = document.getElementById('CalendarBody');
@@ -20,54 +19,20 @@ loadCalendar(0);
 calendarLeftArrow.addEventListener('click', ()=>{
     if(monthReference>0) {
         monthReference = +monthReference -1;
-        for(myCalendarBlock of calendarDayDigit){
-            myCalendarBlock.parentElement.classList.remove('selectedDate');
-            myCalendarBlock.classList.remove('available');
-        }
-        for(eventDate of eventDatesList){
-            eventDate.classList.remove('booked');
-        }
+        calendarBody.innerHTML='';
         loadCalendar(monthReference);
     }
 });
 calendarRightArrow.addEventListener('click', ()=>{
     monthReference = +monthReference +1;
-    for(myCalendarBlock of calendarDayDigit){
-        myCalendarBlock.parentElement.classList.remove('selectedDate');
-        myCalendarBlock.classList.remove('available');
-    }
-    for(eventDate of eventDatesList){
-        eventDate.classList.remove('booked');
-    }
+    calendarBody.innerHTML='';
     loadCalendar(monthReference);
 });
 
-function updateAvailableDate(dates){
-    //console.log(calendarDayDigit.length);
-    for (i=0 ; i< calendarDayDigit.length ; i++){
-        calendarDayDigit[i].removeEventListener('click',toggleSelection);
-    }
-    for (i=0 ; i< dates.length ; i++){
-        calendarDayDigit[dates[i]].addEventListener('click',toggleSelection);
-
-    }
-    //console.log(document.querySelectorAll('.available').length);
-}
 
 
 
-function toggleSelection(){
-    // if(this.parentElement.classList.contains('selectedDate')){
-    //     this.parentElement.classList.remove('selectedDate');
-    // }
-    // else{
-    // }
-    for(circle of selectedDaysCircles){
-        circle.classList.remove('selectedDate');
-    }
-    this.parentElement.classList.add('selectedDate');
-    //availableCalendarDates = document.querySelectorAll('.available');
-}
+
 
 function loadCalendar(monthOffset){
     const dateObj = new Date();
@@ -113,8 +78,8 @@ function loadCalendar(monthOffset){
     // console.log('----- TODAY ----');
     // console.log(`Today is ${todayNameString}`);
     // console.log(`Full date is ${todayNameStringFull}`);
-    const referenceIndex = weekdays.indexOf(todayNameString);
-    //console.log(`referenceIndex for iteration: ${referenceIndex}`);
+    const referenceIndex = weekdays.indexOf(firstDayOfTheMonth);
+    // console.log(`referenceIndex for iteration: ${referenceIndex}`);
 
     
     //Getting last month's details
@@ -159,6 +124,7 @@ function loadCalendar(monthOffset){
     for(i=0 ; i< 42; i++){
         let dateBlock=document.createElement('div');
         dateBlock.style.display = "inline-flex";
+       
         dateBlock.innerHTML= `
         <div class="calendarCircle">
         <div class="calendarDay"></div>
@@ -168,9 +134,10 @@ function loadCalendar(monthOffset){
         </div>
         `;
         dateBlock.classList.add('calendarDayContainer');
-        calendarBody.appendChild(dateBlock);
+        calendarBody.appendChild(dateBlock); 
+        calendarBody.style.width = "280px";
     }
-
+    selectedDaysCircles = document.querySelectorAll('.calendarCircle');
 
     //ADDING BLOCKS DAYS VALUE
     calendarDayDigit = document.querySelectorAll('.calendarDay');
@@ -183,23 +150,42 @@ function loadCalendar(monthOffset){
     for (let i= referenceIndex; i <numberOfDaysInMonth+referenceIndex ; i++){
             calendarDayDigit[i].innerText = 1 + j;
             calendarDayDigit[i].classList.add('available');
-            availableCalendarDatesIndexes[j]=i;
-            
-            console.log(`index: ${j}, valeur : ${i} `);
             j++;
-        }
-        console.log(`Nombre de dates disponibles : ${availableCalendarDatesIndexes.length}`);
-    console.log(`---------`);
+    }
     //nextMonth
     let k = 0;
     for (let i = numberOfDaysInMonth+referenceIndex ; i < calendarDayDigit.length; i++){
         calendarDayDigit[i].innerText = 1 + k;
         k++;
     }
-
-    console.log(`length = ${document.querySelectorAll('.available').length}`);
     document.querySelector('.month').innerText = `${months[thisMonth]} ${thisYear}`;
-    updateAvailableDate(availableCalendarDatesIndexes);
+    updateAvailableDate();
 }
 
 
+function updateAvailableDate(){
+
+    for (i=0 ; i< calendarDayDigit.length ; i++){
+        calendarDayDigit[i].removeEventListener('click',toggleSelection);
+    }
+    for (i=0 ; i< calendarDayDigit.length; i++){
+        if(calendarDayDigit[i].classList.contains('available')){
+            calendarDayDigit[i].addEventListener('click',toggleSelection);
+        }
+
+    }
+}
+
+function toggleSelection(){
+    if(this.parentElement.classList.contains('selectedDate')){
+        this.parentElement.classList.remove('selectedDate');
+    }
+    else{
+        for(circle of selectedDaysCircles){
+            circle.classList.remove('selectedDate');
+        }
+        this.parentElement.classList.add('selectedDate');
+    }
+    console.log(this.parentElement);
+    console.log(this);
+}
