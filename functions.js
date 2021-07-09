@@ -4,12 +4,12 @@ let weekdays = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi','samedi', 'dim
 let months = ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai','Juin',
                 'Juillet','Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
 let calendarDayDigit, selectedDaysCircles;
-;
+
+// To fire click events, month change and calendar upadate
 const calendarLeftArrow = document.getElementById('CalendarLeftArrow');
 const calendarRightArrow = document.getElementById('CalendarRightArrow');
-const eventDatesList = document.querySelectorAll('.calendarDayContainer svg');
 
-
+// Where we'll add the days dynamically
 const calendarBody = document.getElementById('CalendarBody');
 
 
@@ -37,7 +37,6 @@ calendarRightArrow.addEventListener('click', ()=>{
 function loadCalendar(monthOffset){
     const dateObj = new Date();
     // console.log(`This month : ${months[dateObj.getMonth()]} ${dateObj.getFullYear()}`);
-    
     if(monthOffset>0){
         dateObj.setMonth(new Date().getMonth() + monthOffset);
         calendarLeftArrow.style.cursor = 'pointer';
@@ -135,7 +134,6 @@ function loadCalendar(monthOffset){
         `;
         dateBlock.classList.add('calendarDayContainer');
         calendarBody.appendChild(dateBlock); 
-        calendarBody.style.width = "280px";
     }
     selectedDaysCircles = document.querySelectorAll('.calendarCircle');
 
