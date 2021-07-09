@@ -37,26 +37,29 @@ calendarRightArrow.addEventListener('click', ()=>{
 });
 
 function updateAvailableDate(dates){
-    for (block of myCalendarBlocks){
-        block.removeEventListener('click',toggleSelection);
+    //console.log(myCalendarBlocks.length);
+    for (i=0 ; i< myCalendarBlocks.length ; i++){
+        myCalendarBlocks[i].removeEventListener('click',toggleSelection);
     }
-    for (date of dates){
-        myCalendarBlocks[date].addEventListener('click',toggleSelection);
+    for (i=0 ; i< dates.length ; i++){
+        myCalendarBlocks[dates[i]].addEventListener('click',toggleSelection);
+
     }
+    //console.log(document.querySelectorAll('.available').length);
 }
 
 
 
 function toggleSelection(){
-    if(this.parentElement.classList.contains('selectedDate')){
-        this.parentElement.classList.remove('selectedDate');
+    // if(this.parentElement.classList.contains('selectedDate')){
+    //     this.parentElement.classList.remove('selectedDate');
+    // }
+    // else{
+    // }
+    for(circle of selectedDaysCircles){
+        circle.classList.remove('selectedDate');
     }
-    else{
-        for(circle of selectedDaysCircles){
-            circle.classList.remove('selectedDate');
-        }
-        this.parentElement.classList.add('selectedDate');
-    }
+    this.parentElement.classList.add('selectedDate');
     //availableCalendarDates = document.querySelectorAll('.available');
 }
 
@@ -155,15 +158,20 @@ function loadCalendar(monthOffset){
             myCalendarBlocks[i].innerText = 1 + j;
             myCalendarBlocks[i].classList.add('available');
             availableCalendarDatesIndexes[j]=i;
+            
+            console.log(`index: ${j}, valeur : ${i} `);
             j++;
-    }
-
+        }
+        console.log(`Nombre de dates disponibles : ${availableCalendarDatesIndexes.length}`);
+    console.log(`---------`);
     //nextMonth
-    let k = 1;
+    let k = 0;
     for (let i = numberOfDaysInMonth+referenceIndex ; i < myCalendarBlocks.length; i++){
-        myCalendarBlocks[i].innerText = k;
+        myCalendarBlocks[i].innerText = 1 + k;
         k++;
     }
+
+    console.log(`length = ${document.querySelectorAll('.available').length}`);
     document.querySelector('.month').innerText = `${months[thisMonth]} ${thisYear}`;
     updateAvailableDate(availableCalendarDatesIndexes);
 }
