@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The spot</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Codystar&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+
+    <div class="topBgFade"></div>
+    <div class="container2">
+        <h1 class="pageTitles margin2">Réservation</h1>
+        <hr class="headerLines">
+        <!---------------- BLOCKS ---------------------->
+        <section class="resaBlock" id="DateSelectionFreeReservation">
+            <!-- BLOCK LEFT -->
+            <div class="resaBlockLeft">
+                <h2 class="resaBlockHeader">Date</h2>
+                <div class="explanation">
+                    <p class="mainExplanation">Choisissez une date dans le calendrier</p>
+                    <ul class="instructions dateInstructions">
+                        <li>
+                            <svg class="listStyle" width="5" height="5" viewBox="0 0 5 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="2.5" cy="2.5" r="2.5"/>
+                            </svg>
+                            <p>Les pastilles indiquent les jours de programmation notre l'établissement</p>
+                        </li>
+                        <li>
+                            <svg class="listStyle" width="5" height="5" viewBox="0 0 5 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="2.5" cy="2.5" r="2.5"/>
+                            </svg>
+                            <p>Vous pouvez réserver pour ces dates sous-réserve de places disponibles</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- BLOCK RIGHT -->
+            <div class="resaBlockRight">
+                <div id="MonthsCaroussel">
+                    <button id="CalendarLeftArrow">
+                        <svg width="10" height="20" viewBox="0 0 10 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 20L0 10L10 0V20Z"/>
+                        </svg>
+                    </button>
+                    
+                    <p class="month"></p>
+                    <button id="CalendarRightArrow" >
+                        <svg width="10" height="20" viewBox="0 0 10 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M0 20L10 10L0 0V20Z"/>
+                        </svg>
+                    </button>
+                    
+                </div>
+                <div id="CalendarContainer">
+                    <div id="calendarDays">
+                        <div class="calendarDayCap">L</div>
+                        <div class="calendarDayCap">M</div>
+                        <div class="calendarDayCap">M</div>
+                        <div class="calendarDayCap">J</div>
+                        <div class="calendarDayCap">V</div>
+                        <div class="calendarDayCap">S</div>
+                        <div class="calendarDayCap">D</div>
+                    </div>
+                    <div class="calendarBody">
+                        <div class="calendarDayContainer">
+                            <div class="calendarCircle">
+                                <div class="calendarDay"></div>
+                                <svg width="5" height="5" viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="2.5" cy="2.5" r="2.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="calendarDayContainer">
+                            <div class="calendarCircle">
+                                <div class="calendarDay"></div>
+                                <svg width="5" height="5" viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="2.5" cy="2.5" r="2.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="calendarDayContainer">
+                            <div class="calendarCircle">
+                                <div class="calendarDay"></div>
+                                <svg width="5" height="5" viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="2.5" cy="2.5" r="2.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="calendarDayContainer">
+                            <div class="calendarCircle">
+                                <div class="calendarDay"></div>
+                                <svg width="5" height="5" viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="2.5" cy="2.5" r="2.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="calendarDayContainer">
+                            <div class="calendarCircle">
+                                <div class="calendarDay"></div>
+                                <svg width="5" height="5" viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="2.5" cy="2.5" r="2.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="calendarDayContainer">
+                            <div class="calendarCircle">
+                                <div class="calendarDay"></div>
+                                <svg width="5" height="5" viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="2.5" cy="2.5" r="2.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="calendarDayContainer">
+                            <div class="calendarCircle">
+                                <div class="calendarDay"></div>
+                                <svg width="5" height="5" viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="2.5" cy="2.5" r="2.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="calendarDayContainer">
+                            <div class="calendarCircle">
+                                <div class="calendarDay"></div>
+                                <svg width="5" height="5" viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="2.5" cy="2.5" r="2.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="calendarDayContainer">
+                            <div class="calendarCircle">
+                                <div class="calendarDay"></div>
+                                <svg width="5" height="5" viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="2.5" cy="2.5" r="2.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="calendarDayContainer">
+                            <div class="calendarCircle">
+                                <div class="calendarDay"></div>
+                                <svg width="5" height="5" viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="2.5" cy="2.5" r="2.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="calendarDayContainer">
+                            <div class="calendarCircle">
+                                <div class="calendarDay"></div>
+                                <svg width="5" height="5" viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="2.5" cy="2.5" r="2.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="calendarDayContainer">
+                            <div class="calendarCircle">
+                                <div class="calendarDay"></div>
+                                <svg width="5" height="5" viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="2.5" cy="2.5" r="2.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="calendarDayContainer">
+                            <div class="calendarCircle">
+                                <div class="calendarDay"></div>
+                                <svg class="booked" width="5" height="5" viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="2.5" cy="2.5" r="2.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="calendarDayContainer">
+                            <div class="calendarCircle">
+                                <div class="calendarDay"></div>
+                                <svg width="5" height="5" viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="2.5" cy="2.5" r="2.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="calendarDayContainer">
+                            <div class="calendarCircle">
+                                <div class="calendarDay"></div>
+                                <svg width="5" height="5" viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="2.5" cy="2.5" r="2.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="calendarDayContainer">
+                            <div class="calendarCircle">
+                                <div class="calendarDay"></div>
+                                <svg class="booked" width="5" height="5" viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="2.5" cy="2.5" r="2.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="calendarDayContainer">
+                            <div class="calendarCircle">
+                                <div class="calendarDay"></div>
+                                <svg width="5" height="5" viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="2.5" cy="2.5" r="2.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="calendarDayContainer">
+                            <div class="calendarCircle">
+                                <div class="calendarDay"></div>
+                                <svg width="5" height="5" viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="2.5" cy="2.5" r="2.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="calendarDayContainer">
+                            <div class="calendarCircle">
+                                <div class="calendarDay"></div>
+                                <svg class="booked" width="5" height="5" viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="2.5" cy="2.5" r="2.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="calendarDayContainer">
+                            <div class="calendarCircle">
+                                <div class="calendarDay"></div>
+                                <svg width="5" height="5" viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="2.5" cy="2.5" r="2.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="calendarDayContainer">
+                            <div class="calendarCircle">
+                                <div class="calendarDay"></div>
+                                <svg width="5" height="5" viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="2.5" cy="2.5" r="2.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="calendarDayContainer">
+                            <div class="calendarCircle">
+                                <div class="calendarDay"></div>
+                                <svg width="5" height="5" viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="2.5" cy="2.5" r="2.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="calendarDayContainer">
+                            <div class="calendarCircle">
+                                <div class="calendarDay"></div>
+                                <svg width="5" height="5" viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="2.5" cy="2.5" r="2.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="calendarDayContainer">
+                            <div class="calendarCircle">
+                                <div class="calendarDay"></div>
+                                <svg width="5" height="5" viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="2.5" cy="2.5" r="2.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="calendarDayContainer">
+                            <div class="calendarCircle">
+                                <div class="calendarDay"></div>
+                                <svg width="5" height="5" viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="2.5" cy="2.5" r="2.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="calendarDayContainer">
+                            <div class="calendarCircle">
+                                <div class="calendarDay"></div>
+                                <svg width="5" height="5" viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="2.5" cy="2.5" r="2.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="calendarDayContainer">
+                            <div class="calendarCircle">
+                                <div class="calendarDay"></div>
+                                <svg width="5" height="5" viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="2.5" cy="2.5" r="2.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="calendarDayContainer">
+                            <div class="calendarCircle">
+                                <div class="calendarDay"></div>
+                                <svg width="5" height="5" viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="2.5" cy="2.5" r="2.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="calendarDayContainer">
+                            <div class="calendarCircle">
+                                <div class="calendarDay"></div>
+                                <svg width="5" height="5" viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="2.5" cy="2.5" r="2.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="calendarDayContainer">
+                            <div class="calendarCircle">
+                                <div class="calendarDay"></div>
+                                <svg width="5" height="5" viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="2.5" cy="2.5" r="2.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="calendarDayContainer">
+                            <div class="calendarCircle">
+                                <div class="calendarDay"></div>
+                                <svg width="5" height="5" viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="2.5" cy="2.5" r="2.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="calendarDayContainer">
+                            <div class="calendarCircle">
+                                <div class="calendarDay"></div>
+                                <svg width="5" height="5" viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="2.5" cy="2.5" r="2.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="calendarDayContainer">
+                            <div class="calendarCircle">
+                                <div class="calendarDay"></div>
+                                <svg width="5" height="5" viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="2.5" cy="2.5" r="2.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="calendarDayContainer">
+                            <div class="calendarCircle">
+                                <div class="calendarDay"></div>
+                                <svg width="5" height="5" viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="2.5" cy="2.5" r="2.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="calendarDayContainer">
+                            <div class="calendarCircle">
+                                <div class="calendarDay"></div>
+                                <svg width="5" height="5" viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="2.5" cy="2.5" r="2.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="calendarDayContainer">
+                            <div class="calendarCircle">
+                                <div class="calendarDay"></div>
+                                <svg width="5" height="5" viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="2.5" cy="2.5" r="2.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="calendarDayContainer">
+                            <div class="calendarCircle">
+                                <div class="calendarDay"></div>
+                                <svg width="5" height="5" viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="2.5" cy="2.5" r="2.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="calendarDayContainer">
+                            <div class="calendarCircle">
+                                <div class="calendarDay"></div>
+                                <svg width="5" height="5" viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="2.5" cy="2.5" r="2.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="calendarDayContainer">
+                            <div class="calendarCircle">
+                                <div class="calendarDay"></div>
+                                <svg width="5" height="5" viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="2.5" cy="2.5" r="2.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="calendarDayContainer">
+                            <div class="calendarCircle">
+                                <div class="calendarDay"></div>
+                                <svg width="5" height="5" viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="2.5" cy="2.5" r="2.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="calendarDayContainer">
+                            <div class="calendarCircle">
+                                <div class="calendarDay"></div>
+                                <svg width="5" height="5" viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="2.5" cy="2.5" r="2.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="calendarDayContainer">
+                            <div class="calendarCircle">
+                                <div class="calendarDay"></div>
+                                <svg width="5" height="5" viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="2.5" cy="2.5" r="2.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    <script src="./functions.js"></script>
+</body>
+</html>
