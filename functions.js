@@ -14,7 +14,7 @@ const calendarBody = document.getElementById('CalendarBody');
 
 
 
-loadCalendar(0);
+loadCalendar(monthReference);
 
 calendarLeftArrow.addEventListener('click', ()=>{
     if(monthReference>0) {
@@ -36,9 +36,15 @@ calendarRightArrow.addEventListener('click', ()=>{
 
 function loadCalendar(monthOffset){
     const dateObj = new Date();
+    
+    //*********** TEST DATE ***************
+    //const dateObj = new Date(2021, 11,21);
+
+
+
     // console.log(`This month : ${months[dateObj.getMonth()]} ${dateObj.getFullYear()}`);
     if(monthOffset>0){
-        dateObj.setMonth(new Date().getMonth() + monthOffset);
+        dateObj.setMonth(dateObj.getMonth() + monthOffset);
         calendarLeftArrow.style.cursor = 'pointer';
         calendarLeftArrow.style.opacity = 1;
         console.log('Loading New Calendar');
@@ -77,7 +83,7 @@ function loadCalendar(monthOffset){
     // console.log('----- TODAY ----');
     // console.log(`Today is ${todayNameString}`);
     // console.log(`Full date is ${todayNameStringFull}`);
-    const referenceIndex = weekdays.indexOf(firstDayOfTheMonth);
+    let referenceIndex = weekdays.indexOf(firstDayOfTheMonth);
     // console.log(`referenceIndex for iteration: ${referenceIndex}`);
 
     
@@ -118,7 +124,8 @@ function loadCalendar(monthOffset){
     //Last month if overlapping
 
 
-
+    
+    
     //CREATING BLOCKS DYNAMICALLY
     for(i=0 ; i< 42; i++){
         let dateBlock=document.createElement('div');
@@ -150,6 +157,23 @@ function loadCalendar(monthOffset){
             calendarDayDigit[i].classList.add('available');
             j++;
     }
+
+    // if(monthReference == 0){
+    //     for (i = referenceIndex ; i< weekdays.indexOf(todayNameString)+referenceIndex; i++){
+    //         calendarDayDigit[i].classList.remove('available');
+
+    //     }
+    // }
+
+    if(monthReference == 0){
+        let todayDateIndex = +todayNameStringFull.split(' ')[1] - 1;
+        for (i = referenceIndex ; i< todayDateIndex + referenceIndex; i++){
+            calendarDayDigit[i].classList.remove('available');
+        
+             }
+    }
+
+
     //nextMonth
     let k = 0;
     for (let i = numberOfDaysInMonth+referenceIndex ; i < calendarDayDigit.length; i++){
@@ -184,6 +208,4 @@ function toggleSelection(){
         }
         this.parentElement.classList.add('selectedDate');
     }
-    console.log(this.parentElement);
-    console.log(this);
 }
