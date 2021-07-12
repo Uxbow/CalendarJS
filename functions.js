@@ -1,9 +1,53 @@
+///////////////////////////////////////////////////////////////////////////////
+//
+//                                       CALENDAR JS
+//
+//
+//
+//   monthReference : Current month reference offset for last month and next month 
+//                    calculations
+//   weekdays : Array to match with calendar display from Monday to Sunday instead
+//              of using date API values from 0 to 6 (avoid '0' value index error)
+//   months :  used for month update on when changing month
+//
+//   calendarDayValue : calendar body target to set day value
+//   selectedDaysCircles : Shows up when date is selected
+//
+//   bookedDay: class for booked event dates
+//
+//
+//   1. loadCalendar first with reference 0, the current month
+//   2. Click event on "available dates" for reservation with toggleSelection()
+//   3. Click event on Left and Right arrows to update calendar with updateAvailableDate() and
+//      incremented or decremented month reference value 
+//      and then allow selection on dates with toggleSelection()
+//      
+//
+//
+//////////////////////////////////////////////////////////////////////////////
+
+
 let monthReference = 0;
-let calendar = document.getElementById('CalendarContainer');
 let weekdays = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi','samedi', 'dimanche'];
 let months = ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai','Juin',
                 'Juillet','Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
-let calendarDayDigit, selectedDaysCircles;
+let calendarDayValue, selectedDaysCircles;
+
+
+class bookedDay{
+    constructor(eventYear, eventMonth, eventDay){
+        this.year = eventYear;
+        this.month = eventMonth;
+        this.day = eventDay;
+    }
+}
+
+// speaks for itself
+let bookedDaysList = [new bookedDay(2021, 'Juillet', 13),
+                       new bookedDay(2021, 'Juillet', 17),
+                        new bookedDay(2021, 'Juillet', 23),
+                        new bookedDay(2021, 'Août', 7)];
+
 
 // To fire click events, month change and calendar upadate
 const calendarLeftArrow = document.getElementById('CalendarLeftArrow');
@@ -13,9 +57,11 @@ const calendarRightArrow = document.getElementById('CalendarRightArrow');
 const calendarBody = document.getElementById('CalendarBody');
 
 
-
+// 1.
 loadCalendar(monthReference);
 
+
+// 3.
 calendarLeftArrow.addEventListener('click', ()=>{
     if(monthReference>0) {
         monthReference = +monthReference -1;
@@ -35,14 +81,11 @@ calendarRightArrow.addEventListener('click', ()=>{
 
 
 function loadCalendar(monthOffset){
+    //*********** STARTING DATE ***************
     const dateObj = new Date();
+    //const dateObj = new Date(2021, 11,21);   
     
-    //*********** TEST DATE ***************
-    //const dateObj = new Date(2021, 11,21);
-
-
-
-    // console.log(`This month : ${months[dateObj.getMonth()]} ${dateObj.getFullYear()}`);
+    
     if(monthOffset>0){
         dateObj.setMonth(dateObj.getMonth() + monthOffset);
         calendarLeftArrow.style.cursor = 'pointer';
@@ -54,7 +97,6 @@ function loadCalendar(monthOffset){
         calendarLeftArrow.style.opacity = 0.3;
         console.log('Loading Calendar');
     }
-    // console.log(`New calculated month : ${months[dateObj.getMonth()]} ${dateObj.getFullYear()}`);
 
     const today = dateObj.getDate();
     const thisMonth = dateObj.getMonth();
@@ -63,7 +105,7 @@ function loadCalendar(monthOffset){
 
 
     //CALENDAR BOUNDARIES
-    // Get day string to adjust calendar days' indexes with corresponding date values 
+    // Get day string to adjust calendar days' indexes with corresponding calendar values 
     const numberOfDaysInMonth = new Date(thisYear, thisMonth + 1, 0).getDate();
     const firstDayOfTheMonthFull = new Date(thisYear, thisMonth, 1).toLocaleDateString('fr-FR',{
         weekday:'long',
@@ -80,53 +122,14 @@ function loadCalendar(monthOffset){
     });
     const firstDayOfTheMonth = firstDayOfTheMonthFull.split(' ')[0];
     const todayNameString = todayNameStringFull.split(' ')[0];
-    // console.log('----- TODAY ----');
-    // console.log(`Today is ${todayNameString}`);
-    // console.log(`Full date is ${todayNameStringFull}`);
-    let referenceIndex = weekdays.indexOf(firstDayOfTheMonth);
-    // console.log(`referenceIndex for iteration: ${referenceIndex}`);
+    let monthStartingDayIndex = weekdays.indexOf(firstDayOfTheMonth);
 
     
-    //Getting last month's details
+    //GETTING LAST MONTH NUMBER OF DAYS
     const numberOfDaysOfLastMonth = new Date(thisYear, thisMonth, 0).getDate();
-    const firstDayLastMonthFull = new Date(thisYear, thisMonth-1, 1).toLocaleDateString('fr-FR',{
-        weekday:'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-    });
-    const firstDayLastMonth = firstDayLastMonthFull.split(' ')[0];
 
 
-    //Getting next month's details
-    const numberOfDaysOfNextMonth = new Date(thisYear, thisMonth + 2, 0).getDate();
-    const firstDayNextMonthFull = new Date(thisYear, thisMonth+1, 1).toLocaleDateString('fr-FR',{
-        weekday:'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-    });
-    const firstDayNextMonth = firstDayNextMonthFull.split(' ')[0];
-
-    
-    
-    // console.log('---- THIS MONTH -----');
-    // console.log(`First Day of the month is ${firstDayOfTheMonth}`);
-    // console.log(`Number of Days of this month is : ${numberOfDaysInMonth}`);
-
-    // console.log('---- LAST MONTH-----');
-    // console.log(`Number of Days of last month is : ${numberOfDaysOfLastMonth}`);
-    // console.log(`First Day of the month is ${firstDayLastMonth}`);
-
-    // console.log('---- NEXT MONTH-----');
-    // console.log(`Number of Days of next month is : ${numberOfDaysOfNextMonth}`);
-    // console.log(`First Day of the month is ${firstDayNextMonth}`)
-    //Last month if overlapping
-
-
-    
-    
-    //CREATING BLOCKS DYNAMICALLY
+    //CREATING DATE BLOCKS DYNAMICALLY
     for(i=0 ; i< 42; i++){
         let dateBlock=document.createElement('div');
         dateBlock.style.display = "inline-flex";
@@ -144,57 +147,77 @@ function loadCalendar(monthOffset){
     }
     selectedDaysCircles = document.querySelectorAll('.calendarCircle');
 
-    //ADDING BLOCKS DAYS VALUE
-    calendarDayDigit = document.querySelectorAll('.calendarDay');
-    for (i = 0; i < referenceIndex ; i++){
-            calendarDayDigit[i].innerText = numberOfDaysOfLastMonth-(referenceIndex-1)+i;
-    }
-    //this month
+    //ADDING DATE BLOCKS VALUES
 
+    //LAST MONTH
+    calendarDayValue = document.querySelectorAll('.calendarDay');
+    for (i = 0; i < monthStartingDayIndex ; i++){
+            calendarDayValue[i].innerText = numberOfDaysOfLastMonth-(monthStartingDayIndex-1)+i;
+    }
+
+
+    //THIS MONTH
     let j = 0;
-    for (let i= referenceIndex; i <numberOfDaysInMonth+referenceIndex ; i++){
-            calendarDayDigit[i].innerText = 1 + j;
-            calendarDayDigit[i].classList.add('available');
+    for (let i= monthStartingDayIndex; i <numberOfDaysInMonth+monthStartingDayIndex ; i++){
+            calendarDayValue[i].innerText = 1 + j;
+            calendarDayValue[i].classList.add('available');
             j++;
     }
 
-    // if(monthReference == 0){
-    //     for (i = referenceIndex ; i< weekdays.indexOf(todayNameString)+referenceIndex; i++){
-    //         calendarDayDigit[i].classList.remove('available');
-
-    //     }
-    // }
-
+    //PAST DAYS THIS MONTH SET TO UNAVAILABLE
     if(monthReference == 0){
         let todayDateIndex = +todayNameStringFull.split(' ')[1] - 1;
-        for (i = referenceIndex ; i< todayDateIndex + referenceIndex; i++){
-            calendarDayDigit[i].classList.remove('available');
+        for (i = monthStartingDayIndex ; i< todayDateIndex + monthStartingDayIndex; i++){
+            calendarDayValue[i].classList.remove('available');
         
              }
     }
 
 
-    //nextMonth
+    // NEXT MONTH
     let k = 0;
-    for (let i = numberOfDaysInMonth+referenceIndex ; i < calendarDayDigit.length; i++){
-        calendarDayDigit[i].innerText = 1 + k;
+    for (let i = numberOfDaysInMonth+monthStartingDayIndex ; i < calendarDayValue.length; i++){
+        calendarDayValue[i].innerText = 1 + k;
         k++;
     }
+
+    // UPDATING MONTH AND YEAR ON CALENDAR HEADER
     document.querySelector('.month').innerText = `${months[thisMonth]} ${thisYear}`;
+
+
+    //ADDING BOOKED DAYS
+    let calendarDayBookedItems = [];
+    for (let i= monthStartingDayIndex; i <numberOfDaysInMonth+monthStartingDayIndex ; i++){
+        calendarDayBookedItems[i-monthStartingDayIndex] = new bookedDay(thisYear,
+                                                   months[thisMonth],
+                                                +calendarDayValue[i-monthStartingDayIndex].innerText); 
+        for (j=0; j< bookedDaysList.length; j++){
+            if(calendarDayBookedItems[i-monthStartingDayIndex].year ===  bookedDaysList[j].year){
+                if(calendarDayBookedItems[i-monthStartingDayIndex].month ===  bookedDaysList[j].month){
+                    if(calendarDayBookedItems[i-monthStartingDayIndex].day ===  bookedDaysList[j].day){
+                        console.log(i);
+                        console.log(j);
+                        calendarDayValue[i-monthStartingDayIndex].parentElement.querySelector('.available ~svg').classList.add('booked');
+                    }
+                }
+            }
+        }
+
+    }
+
+    //SETTING CLICKABLE DAYS
     updateAvailableDate();
 }
 
 
 function updateAvailableDate(){
-
-    for (i=0 ; i< calendarDayDigit.length ; i++){
-        calendarDayDigit[i].removeEventListener('click',toggleSelection);
+    for (i=0 ; i< calendarDayValue.length ; i++){
+        calendarDayValue[i].removeEventListener('click',toggleSelection);
     }
-    for (i=0 ; i< calendarDayDigit.length; i++){
-        if(calendarDayDigit[i].classList.contains('available')){
-            calendarDayDigit[i].addEventListener('click',toggleSelection);
+    for (i=0 ; i< calendarDayValue.length; i++){
+        if(calendarDayValue[i].classList.contains('available')){
+            calendarDayValue[i].addEventListener('click',toggleSelection);
         }
-
     }
 }
 
