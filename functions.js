@@ -43,10 +43,21 @@ class bookedDay{
 }
 
 // speaks for itself
-let bookedDaysList = [new bookedDay(2021, 'Juillet', 13),
+let bookedDaysList = [new bookedDay(2021, 'Juillet', 31),
                        new bookedDay(2021, 'Juillet', 17),
                         new bookedDay(2021, 'Juillet', 23),
-                        new bookedDay(2021, 'Août', 7)];
+                        new bookedDay(2022, 'Janvier', 10),
+                        new bookedDay(2021, 'Août', 7),
+                        new bookedDay(2021, 'Décembre', 3),
+                        new bookedDay(2021, 'Décembre', 4),
+                        new bookedDay(2021, 'Décembre', 31),
+                        new bookedDay(2022, 'Janvier', 1),
+                        new bookedDay(2022, 'Janvier', 17),
+                         new bookedDay(2021, 'Octobre', 11),
+                         new bookedDay(2021, 'Novembre', 10),
+                         new bookedDay(2021, 'Août', 7),
+                         new bookedDay(2022, 'Janvier', 31),
+                         new bookedDay(2022, 'Fevrier', 14)];
 
 
 // To fire click events, month change and calendar upadate
@@ -101,6 +112,7 @@ function loadCalendar(monthOffset){
     const today = dateObj.getDate();
     const thisMonth = dateObj.getMonth();
     const thisYear = dateObj.getFullYear();
+
 
 
 
@@ -230,24 +242,31 @@ function setCalendarDayList(lastMonthDayCount, todayIndex, startIndex,daysCount)
 
 
 function addBookedDays(ref, todayIndex, startIndex, daysCount, bookedDays, list, year, month, monthArray){
-    if(ref==0){ //if current Month, available days iteration starting from today
-        let w = 0
-        console.log(todayIndex);
-        console.log(startIndex);
-        console.log(daysCount);
+    //if current Month, available days iteration starting from today
+    let w = 0;
 
-        //setting days array for comparison to BookedDaysList
-        for(let i= todayIndex+startIndex; i <daysCount+startIndex ; i++){
-            console.log('test');
-            bookedDays[w] = new bookedDay(year,
-                                            monthArray[month],
+    if(ref!=0){
+        console.log('Last month config');
+        monthTemp = month - 1;
+        let yearTemp;
+        if (monthTemp == -1){
+            console.log('LAST YEAR');
+            yearTemp = year - 1;
+            monthTemp = 12;
+            console.log(monthTemp);
+            console.log(yearTemp);
+        }
+        for(let i= 0; i <startIndex ; i++){
+            console.log('Current month config 0');
+            bookedDays[w] = new bookedDay(yearTemp,
+                                            monthArray[monthTemp],
                                             +calendarDayValue[i].innerText); 
-                                            console.log(` w: ${w} ==> value = ${calendarDayValue[i].innerText}`);
             for (j=0; j< list.length; j++){
                 if(bookedDays[w].year ===  list[j].year){
                     if(bookedDays[w].month ===  list[j].month){
                         if(bookedDays[w].day ===  list[j].day){
                             calendarDayValue[i].parentElement.querySelector('svg').classList.add('booked');
+                            calendarDayValue[i].parentElement.querySelector('svg').style.opacity = "0.3";
                         }
                     }
                 }
@@ -255,22 +274,54 @@ function addBookedDays(ref, todayIndex, startIndex, daysCount, bookedDays, list,
             w++;
     
         }
+        todayIndex = 0;
     }
-    else{
-        for (let i= startIndex; i <daysCount+startIndex ; i++){
-            bookedDays[i-startIndex] = new bookedDay(year,
-                                                    monthArray[month],
-                                                    +calendarDayValue[i-startIndex].innerText); 
-            for (j=0; j< list.length; j++){
-                if(bookedDays[i-startIndex].year ===  list[j].year){
-                    if(bookedDays[i-startIndex].month ===  list[j].month){
-                        if(bookedDays[i-startIndex].day ===  list[j].day){
-                            calendarDayValue[i-startIndex].parentElement.querySelector('svg').classList.add('booked');
-                        }
+
+
+    //setting days array for comparison to BookedDaysList
+    for(let i= todayIndex+startIndex; i <daysCount+startIndex ; i++){
+        console.log('Current month config 0');
+        bookedDays[w] = new bookedDay(year,
+                                        monthArray[month],
+                                        +calendarDayValue[i].innerText); 
+        for (j=0; j< list.length; j++){
+            if(bookedDays[w].year ===  list[j].year){
+                if(bookedDays[w].month ===  list[j].month){
+                    if(bookedDays[w].day ===  list[j].day){
+                        calendarDayValue[i].parentElement.querySelector('svg').classList.add('booked');
                     }
                 }
             }
-    
         }
+        w++;
+
     }
+    month = month + 1;
+    for(let i= daysCount+startIndex; i <42 ; i++){
+        if (month == 12){
+            console.log('IF');
+            console.log(month);
+            console.log(year);
+            year = year + 1;
+            month = 0;
+        }
+        console.log(month);
+        console.log(year);
+        console.log('--------------');
+        bookedDays[w] = new bookedDay(year,
+                                        monthArray[month],
+                                        +calendarDayValue[i].innerText);
+        for (j=0; j< list.length; j++){
+            if(bookedDays[w].year ===  list[j].year){
+                if(bookedDays[w].month ===  list[j].month){
+                    if(bookedDays[w].day ===  list[j].day){
+                        calendarDayValue[i].parentElement.querySelector('svg').classList.add('booked');
+                        calendarDayValue[i].parentElement.querySelector('svg').style.opacity = '0.3';
+                    }
+                }
+            }
+        }
+        w++;
+    }
+    //console.log(bookedDays);
 }
