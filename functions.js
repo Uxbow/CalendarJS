@@ -16,7 +16,10 @@
 //   bookedDay: class for booked event dates
 //
 //
-//   1. loadCalendar first with reference 0, the current month
+//   1. LoadCalendar creates day blocks dynamically, with a reference (0 for the current month)
+//      ==> setCalendarDayList injects correct days in calendar
+//      ==> addBookedDays adds dots for event days (comparison to the bookedDaysList)
+//      ==> updateAvailableDate sets clickable days
 //   2. Click event on "available dates" for reservation with toggleSelection()
 //   3. Click event on Left and Right arrows to update calendar with updateAvailableDate() and
 //      incremented or decremented month reference value 
@@ -29,7 +32,7 @@
 
 let monthReference = 0;
 let weekdays = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi','samedi', 'dimanche'];
-let months = ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai','Juin',
+let months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai','Juin',
                 'Juillet','Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
 let calendarDayValue, selectedDaysCircles;
 
@@ -43,21 +46,29 @@ class bookedDay{
 }
 
 // speaks for itself
-let bookedDaysList = [new bookedDay(2021, 'Juillet', 31),
-                       new bookedDay(2021, 'Juillet', 17),
+// Set of dates showing events
+let bookedDaysList = [new bookedDay(2021, 'Juillet', 10),
+                        new bookedDay(2021, 'Juillet', 17),
                         new bookedDay(2021, 'Juillet', 23),
-                        new bookedDay(2022, 'Janvier', 10),
+                        new bookedDay(2021, 'Juillet', 31),
                         new bookedDay(2021, 'Août', 7),
+                        new bookedDay(2021, 'Août', 15),
+                        new bookedDay(2021, 'Octobre', 11),
+                        new bookedDay(2021, 'Novembre', 10),
                         new bookedDay(2021, 'Décembre', 3),
                         new bookedDay(2021, 'Décembre', 4),
                         new bookedDay(2021, 'Décembre', 31),
                         new bookedDay(2022, 'Janvier', 1),
-                        new bookedDay(2022, 'Janvier', 17),
-                         new bookedDay(2021, 'Octobre', 11),
-                         new bookedDay(2021, 'Novembre', 10),
-                         new bookedDay(2021, 'Août', 7),
-                         new bookedDay(2022, 'Janvier', 31),
-                         new bookedDay(2022, 'Fevrier', 14)];
+                        new bookedDay(2022, 'Janvier', 7),
+                        new bookedDay(2022, 'Janvier', 15),
+                        new bookedDay(2022, 'Janvier', 31),
+                        new bookedDay(2022, 'Février', 13),
+                         new bookedDay(2022, 'Décembre', 29),
+                         new bookedDay(2023, 'Janvier', 1),
+                         new bookedDay(2023, 'Janvier', 6),
+                         new bookedDay(2023, 'Décembre', 31),
+                         new bookedDay(2024, 'Janvier', 1),
+                         new bookedDay(2024, 'Janvier', 6)];
 
 
 // To fire click events, month change and calendar upadate
@@ -75,13 +86,13 @@ loadCalendar(monthReference);
 // 3.
 calendarLeftArrow.addEventListener('click', ()=>{
     if(monthReference>0) {
-        monthReference = +monthReference -1;
+        monthReference = monthReference -1;
         calendarBody.innerHTML='';
         loadCalendar(monthReference);
     }
 });
 calendarRightArrow.addEventListener('click', ()=>{
-    monthReference = +monthReference +1;
+    monthReference = monthReference +1;
     calendarBody.innerHTML='';
     loadCalendar(monthReference);
 });
@@ -94,19 +105,17 @@ calendarRightArrow.addEventListener('click', ()=>{
 function loadCalendar(monthOffset){
     //*********** STARTING DATE ***************
     const dateObj = new Date();
-    //const dateObj = new Date(2021, 11,21);   
+    //const dateObj = new Date(2021, 11,21);   FOR TEST
     
     
-    if(monthOffset>0){
+    if(monthOffset>0){  
         dateObj.setMonth(dateObj.getMonth() + monthOffset);
         calendarLeftArrow.style.cursor = 'pointer';
         calendarLeftArrow.style.opacity = 1;
-        console.log('Loading New Calendar');
     }
-    else{
+    else{    //BACK BUTTON NOT AVAILABLE FOR CURRENT MONTH 
         calendarLeftArrow.style.cursor = 'auto';
         calendarLeftArrow.style.opacity = 0.3;
-        console.log('Loading Calendar');
     }
 
     const today = dateObj.getDate();
@@ -114,9 +123,6 @@ function loadCalendar(monthOffset){
     const thisYear = dateObj.getFullYear();
 
 
-
-
-    //CALENDAR BOUNDARIES
     // Get day string to adjust calendar days' indexes with corresponding calendar values 
     const numberOfDaysInMonth = new Date(thisYear, thisMonth + 1, 0).getDate();
     const firstDayOfTheMonthFull = new Date(thisYear, thisMonth, 1).toLocaleDateString('fr-FR',{
@@ -201,14 +207,13 @@ function toggleSelection(){
 
 
 function setCalendarDayList(lastMonthDayCount, todayIndex, startIndex,daysCount){
-
     //LAST MONTH
     for (i = 0; i < startIndex ; i++){
             calendarDayValue[i].innerText = lastMonthDayCount-(startIndex-1)+i;
     }
 
     //THIS MONTH
-    if(monthReference == 0){ //IF CURRENT MONTH
+    if(monthReference == 0){ //if current month
         let j = y = 0;
         //before Today on current Month
         for (let i= startIndex; i<todayIndex  + startIndex; i++){
@@ -223,7 +228,7 @@ function setCalendarDayList(lastMonthDayCount, todayIndex, startIndex,daysCount)
         }
 
     }
-    else{//FULL MONTH AVAILABLE
+    else{//Full month available
         let j= 0;
         for (let i= startIndex; i <daysCount+startIndex ; i++){
                 calendarDayValue[i].innerText = 1 + j;
@@ -242,9 +247,9 @@ function setCalendarDayList(lastMonthDayCount, todayIndex, startIndex,daysCount)
 
 
 function addBookedDays(ref, todayIndex, startIndex, daysCount, bookedDays, list, year, month, monthArray){
-    //if current Month, available days iteration starting from today
     let w = 0;
-
+    
+    //if current Month, available days iteration starting from today
     if(ref!=0){
         console.log('Last month config');
         monthTemp = month - 1;
@@ -252,12 +257,15 @@ function addBookedDays(ref, todayIndex, startIndex, daysCount, bookedDays, list,
         if (monthTemp == -1){
             console.log('LAST YEAR');
             yearTemp = year - 1;
-            monthTemp = 12;
+            monthTemp = 11;
             console.log(monthTemp);
             console.log(yearTemp);
         }
+        else{
+            yearTemp = year;
+        }
         for(let i= 0; i <startIndex ; i++){
-            console.log('Current month config 0');
+            //setting days array for comparison to BookedDaysList, here for past months
             bookedDays[w] = new bookedDay(yearTemp,
                                             monthArray[monthTemp],
                                             +calendarDayValue[i].innerText); 
@@ -276,11 +284,8 @@ function addBookedDays(ref, todayIndex, startIndex, daysCount, bookedDays, list,
         }
         todayIndex = 0;
     }
-
-
-    //setting days array for comparison to BookedDaysList
     for(let i= todayIndex+startIndex; i <daysCount+startIndex ; i++){
-        console.log('Current month config 0');
+        //setting days array for comparison to BookedDaysList
         bookedDays[w] = new bookedDay(year,
                                         monthArray[month],
                                         +calendarDayValue[i].innerText); 
@@ -299,19 +304,14 @@ function addBookedDays(ref, todayIndex, startIndex, daysCount, bookedDays, list,
     month = month + 1;
     for(let i= daysCount+startIndex; i <42 ; i++){
         if (month == 12){
-            console.log('IF');
-            console.log(month);
-            console.log(year);
             year = year + 1;
             month = 0;
         }
-        console.log(month);
-        console.log(year);
-        console.log('--------------');
         bookedDays[w] = new bookedDay(year,
                                         monthArray[month],
                                         +calendarDayValue[i].innerText);
         for (j=0; j< list.length; j++){
+            //setting days array for comparison to BookedDaysList, for coming months
             if(bookedDays[w].year ===  list[j].year){
                 if(bookedDays[w].month ===  list[j].month){
                     if(bookedDays[w].day ===  list[j].day){
