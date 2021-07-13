@@ -157,20 +157,37 @@ function loadCalendar(monthOffset){
 
 
     //THIS MONTH
-    let j = 0;
-    for (let i= monthStartingDayIndex; i <numberOfDaysInMonth+monthStartingDayIndex ; i++){
-            calendarDayValue[i].innerText = 1 + j;
-            calendarDayValue[i].classList.add('available');
-            j++;
-    }
-
+    // let j = 0;
+    // for (let i= monthStartingDayIndex; i <numberOfDaysInMonth+monthStartingDayIndex ; i++){
+    //         calendarDayValue[i].innerText = 1 + j;
+    //         calendarDayValue[i].classList.add('available');
+    //         j++;
+    // }
+    let j = y = 0;
+    let todayDateIndex;
     //PAST DAYS THIS MONTH SET TO UNAVAILABLE
     if(monthReference == 0){
-        let todayDateIndex = +todayNameStringFull.split(' ')[1] - 1;
-        for (i = monthStartingDayIndex ; i< todayDateIndex + monthStartingDayIndex; i++){
-            calendarDayValue[i].classList.remove('available');
-        
-             }
+        todayDateIndex = +todayNameStringFull.split(' ')[1] - 1;
+        console.log(todayDateIndex);
+        //before Today on current Month
+        for (let i= monthStartingDayIndex; i<todayDateIndex  + monthStartingDayIndex; i++){
+            calendarDayValue[i].innerText = 1 + j;
+            j++;
+        }
+        //starting Today on current Month
+        for (let i= todayDateIndex + monthStartingDayIndex; i <numberOfDaysInMonth+monthStartingDayIndex ; i++){
+            calendarDayValue[i].innerText = todayDateIndex + 1 + y;
+            calendarDayValue[i].classList.add('available');
+            y++;
+        }
+
+    }
+    else{
+        for (let i= monthStartingDayIndex; i <numberOfDaysInMonth+monthStartingDayIndex ; i++){
+                calendarDayValue[i].innerText = 1 + j;
+                calendarDayValue[i].classList.add('available');
+                j++;
+        }
     }
 
 
@@ -187,22 +204,39 @@ function loadCalendar(monthOffset){
 
     //ADDING BOOKED DAYS
     let calendarDayBookedItems = [];
-    for (let i= monthStartingDayIndex; i <numberOfDaysInMonth+monthStartingDayIndex ; i++){
-        calendarDayBookedItems[i-monthStartingDayIndex] = new bookedDay(thisYear,
-                                                   months[thisMonth],
-                                                +calendarDayValue[i-monthStartingDayIndex].innerText); 
-        for (j=0; j< bookedDaysList.length; j++){
-            if(calendarDayBookedItems[i-monthStartingDayIndex].year ===  bookedDaysList[j].year){
-                if(calendarDayBookedItems[i-monthStartingDayIndex].month ===  bookedDaysList[j].month){
-                    if(calendarDayBookedItems[i-monthStartingDayIndex].day ===  bookedDaysList[j].day){
-                        console.log(i);
-                        console.log(j);
-                        calendarDayValue[i-monthStartingDayIndex].parentElement.querySelector('.available ~svg').classList.add('booked');
+    if(monthReference==0){
+        for (let i= todayDateIndex; i <numberOfDaysInMonth+monthStartingDayIndex ; i++){
+            calendarDayBookedItems[i-monthStartingDayIndex] = new bookedDay(thisYear,
+                                                       months[thisMonth],
+                                                    +calendarDayValue[i-monthStartingDayIndex].innerText); 
+            for (j=0; j< bookedDaysList.length; j++){
+                if(calendarDayBookedItems[i-monthStartingDayIndex].year ===  bookedDaysList[j].year){
+                    if(calendarDayBookedItems[i-monthStartingDayIndex].month ===  bookedDaysList[j].month){
+                        if(calendarDayBookedItems[i-monthStartingDayIndex].day ===  bookedDaysList[j].day){
+                            calendarDayValue[i-monthStartingDayIndex].parentElement.querySelector('.available ~svg').classList.add('booked');
+                        }
                     }
                 }
             }
+    
         }
-
+    }
+    else{
+        for (let i= monthStartingDayIndex; i <numberOfDaysInMonth+monthStartingDayIndex ; i++){
+            calendarDayBookedItems[i-monthStartingDayIndex] = new bookedDay(thisYear,
+                                                       months[thisMonth],
+                                                    +calendarDayValue[i-monthStartingDayIndex].innerText); 
+            for (j=0; j< bookedDaysList.length; j++){
+                if(calendarDayBookedItems[i-monthStartingDayIndex].year ===  bookedDaysList[j].year){
+                    if(calendarDayBookedItems[i-monthStartingDayIndex].month ===  bookedDaysList[j].month){
+                        if(calendarDayBookedItems[i-monthStartingDayIndex].day ===  bookedDaysList[j].day){
+                            calendarDayValue[i-monthStartingDayIndex].parentElement.querySelector('svg').classList.add('booked');
+                        }
+                    }
+                }
+            }
+    
+        }
     }
 
     //SETTING CLICKABLE DAYS
