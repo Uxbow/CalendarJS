@@ -148,97 +148,17 @@ function loadCalendar(monthOffset){
     selectedDaysCircles = document.querySelectorAll('.calendarCircle');
 
     //ADDING DATE BLOCKS VALUES
-
-    //LAST MONTH
+    let todayDateIndex  = +todayNameStringFull.split(' ')[1] - 1;;
     calendarDayValue = document.querySelectorAll('.calendarDay');
-    for (i = 0; i < monthStartingDayIndex ; i++){
-            calendarDayValue[i].innerText = numberOfDaysOfLastMonth-(monthStartingDayIndex-1)+i;
-    }
-
-
-    //THIS MONTH
-    // let j = 0;
-    // for (let i= monthStartingDayIndex; i <numberOfDaysInMonth+monthStartingDayIndex ; i++){
-    //         calendarDayValue[i].innerText = 1 + j;
-    //         calendarDayValue[i].classList.add('available');
-    //         j++;
-    // }
-    let j = y = 0;
-    let todayDateIndex;
-    //PAST DAYS THIS MONTH SET TO UNAVAILABLE
-    if(monthReference == 0){
-        todayDateIndex = +todayNameStringFull.split(' ')[1] - 1;
-        console.log(todayDateIndex);
-        //before Today on current Month
-        for (let i= monthStartingDayIndex; i<todayDateIndex  + monthStartingDayIndex; i++){
-            calendarDayValue[i].innerText = 1 + j;
-            j++;
-        }
-        //starting Today on current Month
-        for (let i= todayDateIndex + monthStartingDayIndex; i <numberOfDaysInMonth+monthStartingDayIndex ; i++){
-            calendarDayValue[i].innerText = todayDateIndex + 1 + y;
-            calendarDayValue[i].classList.add('available');
-            y++;
-        }
-
-    }
-    else{
-        for (let i= monthStartingDayIndex; i <numberOfDaysInMonth+monthStartingDayIndex ; i++){
-                calendarDayValue[i].innerText = 1 + j;
-                calendarDayValue[i].classList.add('available');
-                j++;
-        }
-    }
-
-
-    // NEXT MONTH
-    let k = 0;
-    for (let i = numberOfDaysInMonth+monthStartingDayIndex ; i < calendarDayValue.length; i++){
-        calendarDayValue[i].innerText = 1 + k;
-        k++;
-    }
+    setCalendarDayList(numberOfDaysOfLastMonth,todayDateIndex, monthStartingDayIndex, numberOfDaysInMonth);
 
     // UPDATING MONTH AND YEAR ON CALENDAR HEADER
     document.querySelector('.month').innerText = `${months[thisMonth]} ${thisYear}`;
 
-
     //ADDING BOOKED DAYS
     let calendarDayBookedItems = [];
-    if(monthReference==0){
-        for (let i= todayDateIndex; i <numberOfDaysInMonth+monthStartingDayIndex ; i++){
-            calendarDayBookedItems[i-monthStartingDayIndex] = new bookedDay(thisYear,
-                                                       months[thisMonth],
-                                                    +calendarDayValue[i-monthStartingDayIndex].innerText); 
-            for (j=0; j< bookedDaysList.length; j++){
-                if(calendarDayBookedItems[i-monthStartingDayIndex].year ===  bookedDaysList[j].year){
-                    if(calendarDayBookedItems[i-monthStartingDayIndex].month ===  bookedDaysList[j].month){
-                        if(calendarDayBookedItems[i-monthStartingDayIndex].day ===  bookedDaysList[j].day){
-                            calendarDayValue[i-monthStartingDayIndex].parentElement.querySelector('.available ~svg').classList.add('booked');
-                        }
-                    }
-                }
-            }
+    addBookedDays(monthReference, todayDateIndex, monthStartingDayIndex, numberOfDaysInMonth,calendarDayBookedItems, bookedDaysList,thisYear, thisMonth, months);
     
-        }
-    }
-    else{
-        for (let i= monthStartingDayIndex; i <numberOfDaysInMonth+monthStartingDayIndex ; i++){
-            calendarDayBookedItems[i-monthStartingDayIndex] = new bookedDay(thisYear,
-                                                       months[thisMonth],
-                                                    +calendarDayValue[i-monthStartingDayIndex].innerText); 
-            for (j=0; j< bookedDaysList.length; j++){
-                if(calendarDayBookedItems[i-monthStartingDayIndex].year ===  bookedDaysList[j].year){
-                    if(calendarDayBookedItems[i-monthStartingDayIndex].month ===  bookedDaysList[j].month){
-                        if(calendarDayBookedItems[i-monthStartingDayIndex].day ===  bookedDaysList[j].day){
-                            calendarDayValue[i-monthStartingDayIndex].parentElement.querySelector('svg').classList.add('booked');
-                        }
-                    }
-                }
-            }
-    
-        }
-    }
-
     //SETTING CLICKABLE DAYS
     updateAvailableDate();
 }
@@ -264,5 +184,93 @@ function toggleSelection(){
             circle.classList.remove('selectedDate');
         }
         this.parentElement.classList.add('selectedDate');
+    }
+}
+
+
+function setCalendarDayList(lastMonthDayCount, todayIndex, startIndex,daysCount){
+
+    //LAST MONTH
+    for (i = 0; i < startIndex ; i++){
+            calendarDayValue[i].innerText = lastMonthDayCount-(startIndex-1)+i;
+    }
+
+    //THIS MONTH
+    if(monthReference == 0){ //IF CURRENT MONTH
+        let j = y = 0;
+        //before Today on current Month
+        for (let i= startIndex; i<todayIndex  + startIndex; i++){
+            calendarDayValue[i].innerText = 1 + j;
+            j++;
+        }
+        //starting Today on current Month
+        for (let i= todayIndex + startIndex; i <daysCount+startIndex ; i++){
+            calendarDayValue[i].innerText = todayIndex + 1 + y;
+            calendarDayValue[i].classList.add('available');
+            y++;
+        }
+
+    }
+    else{//FULL MONTH AVAILABLE
+        let j= 0;
+        for (let i= startIndex; i <daysCount+startIndex ; i++){
+                calendarDayValue[i].innerText = 1 + j;
+                calendarDayValue[i].classList.add('available');
+                j++;
+        }
+    }
+
+    // NEXT MONTH
+    let k = 0;
+    for (let i = daysCount+startIndex ; i < calendarDayValue.length; i++){
+        calendarDayValue[i].innerText = 1 + k;
+        k++;
+    }
+}
+
+
+function addBookedDays(ref, todayIndex, startIndex, daysCount, bookedDays, list, year, month, monthArray){
+    if(ref==0){ //if current Month, available days iteration starting from today
+        let w = 0
+        console.log(todayIndex);
+        console.log(startIndex);
+        console.log(daysCount);
+
+        //setting days array for comparison to BookedDaysList
+        for(let i= todayIndex+startIndex; i <daysCount+startIndex ; i++){
+            console.log('test');
+            bookedDays[w] = new bookedDay(year,
+                                            monthArray[month],
+                                            +calendarDayValue[i].innerText); 
+                                            console.log(` w: ${w} ==> value = ${calendarDayValue[i].innerText}`);
+            for (j=0; j< list.length; j++){
+                if(bookedDays[w].year ===  list[j].year){
+                    if(bookedDays[w].month ===  list[j].month){
+                        if(bookedDays[w].day ===  list[j].day){
+                            calendarDayValue[i].parentElement.querySelector('svg').classList.add('booked');
+                        }
+                    }
+                }
+            }
+            w++;
+    
+        }
+    }
+    else{
+        for (let i= startIndex; i <daysCount+startIndex ; i++){
+            bookedDays[i-startIndex] = new bookedDay(year,
+                                                    monthArray[month],
+                                                    +calendarDayValue[i-startIndex].innerText); 
+            for (j=0; j< list.length; j++){
+                if(bookedDays[i-startIndex].year ===  list[j].year){
+                    if(bookedDays[i-startIndex].month ===  list[j].month){
+                        if(bookedDays[i-startIndex].day ===  list[j].day){
+                            calendarDayValue[i-startIndex].parentElement.querySelector('svg').classList.add('booked');
+                        }
+                    }
+                }
+            }
+    
+        }
     }
 }
