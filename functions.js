@@ -347,4 +347,6 @@ function pushBookedDay(eventYear, eventMonthString, eventDate){
     bookedDaysList.push(new BookedDay(eventYear, eventMonthString, eventDate));
     calendarBody.innerHTML="";
     loadCalendar(monthReference);
+    console.log(`New booked day added:
+    ${eventDate} ${eventMonthString} ${eventYear}`)
 }
