@@ -37,7 +37,7 @@ let months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai','Juin',
 let calendarDayValue, selectedDaysCircles;
 
 
-class bookedDay{
+class BookedDay{
     constructor(eventYear, eventMonth, eventDay){
         this.year = eventYear;
         this.month = eventMonth;
@@ -45,31 +45,35 @@ class bookedDay{
     }
 }
 
+
+let bookedDaysList = [];
 // speaks for itself
 // Set of dates showing events
-let bookedDaysList = [new bookedDay(2021, 'Juillet', 10),
-                        new bookedDay(2021, 'Juillet', 17),
-                        new bookedDay(2021, 'Juillet', 23),
-                        new bookedDay(2021, 'Juillet', 31),
-                        new bookedDay(2021, 'Août', 7),
-                        new bookedDay(2021, 'Août', 15),
-                        new bookedDay(2021, 'Octobre', 11),
-                        new bookedDay(2021, 'Novembre', 10),
-                        new bookedDay(2021, 'Décembre', 3),
-                        new bookedDay(2021, 'Décembre', 4),
-                        new bookedDay(2021, 'Décembre', 31),
-                        new bookedDay(2022, 'Janvier', 1),
-                        new bookedDay(2022, 'Janvier', 7),
-                        new bookedDay(2022, 'Janvier', 15),
-                        new bookedDay(2022, 'Janvier', 31),
-                        new bookedDay(2022, 'Février', 13),
-                         new bookedDay(2022, 'Décembre', 29),
-                         new bookedDay(2023, 'Janvier', 1),
-                         new bookedDay(2023, 'Janvier', 6),
-                         new bookedDay(2023, 'Décembre', 31),
-                         new bookedDay(2024, 'Janvier', 1),
-                         new bookedDay(2024, 'Janvier', 6)];
+// let bookedDaysList = [new BookedDay(2021, 'Juillet', 10),
+//                         new BookedDay(2021, 'Juillet', 17),
+//                         new BookedDay(2021, 'Juillet', 23),
+//                         new BookedDay(2021, 'Juillet', 31),
+//                         new BookedDay(2021, 'Août', 7),
+//                         new BookedDay(2021, 'Août', 15),
+//                         new BookedDay(2021, 'Octobre', 11),
+//                         new BookedDay(2021, 'Novembre', 10),
+//                         new BookedDay(2021, 'Décembre', 3),
+//                         new BookedDay(2021, 'Décembre', 4),
+//                         new BookedDay(2021, 'Décembre', 31),
+//                         new BookedDay(2022, 'Janvier', 1),
+//                         new BookedDay(2022, 'Janvier', 7),
+//                         new BookedDay(2022, 'Janvier', 15),
+//                         new BookedDay(2022, 'Janvier', 31),
+//                         new BookedDay(2022, 'Février', 13),
+//                          new BookedDay(2022, 'Décembre', 29),
+//                          new BookedDay(2023, 'Janvier', 1),
+//                          new BookedDay(2023, 'Janvier', 6),
+//                          new BookedDay(2023, 'Décembre', 31),
+//                          new BookedDay(2024, 'Janvier', 1),
+//                          new BookedDay(2024, 'Janvier', 6)];
 
+
+//addBookedDays(2021, 'Décembre', 31);
 
 // To fire click events, month change and calendar upadate
 const calendarLeftArrow = document.getElementById('CalendarLeftArrow');
@@ -202,6 +206,7 @@ function toggleSelection(){
             circle.classList.remove('selectedDate');
         }
         this.parentElement.classList.add('selectedDate');
+        getSelectedDate(this.innerText);
     }
 }
 
@@ -251,22 +256,18 @@ function addBookedDays(ref, todayIndex, startIndex, daysCount, bookedDays, list,
     
     //if current Month, available days iteration starting from today
     if(ref!=0){
-        console.log('Last month config');
         monthTemp = month - 1;
         let yearTemp;
         if (monthTemp == -1){
-            console.log('LAST YEAR');
             yearTemp = year - 1;
             monthTemp = 11;
-            console.log(monthTemp);
-            console.log(yearTemp);
         }
         else{
             yearTemp = year;
         }
         for(let i= 0; i <startIndex ; i++){
             //setting days array for comparison to BookedDaysList, here for past months
-            bookedDays[w] = new bookedDay(yearTemp,
+            bookedDays[w] = new BookedDay(yearTemp,
                                             monthArray[monthTemp],
                                             +calendarDayValue[i].innerText); 
             for (j=0; j< list.length; j++){
@@ -286,7 +287,7 @@ function addBookedDays(ref, todayIndex, startIndex, daysCount, bookedDays, list,
     }
     for(let i= todayIndex+startIndex; i <daysCount+startIndex ; i++){
         //setting days array for comparison to BookedDaysList
-        bookedDays[w] = new bookedDay(year,
+        bookedDays[w] = new BookedDay(year,
                                         monthArray[month],
                                         +calendarDayValue[i].innerText); 
         for (j=0; j< list.length; j++){
@@ -307,7 +308,7 @@ function addBookedDays(ref, todayIndex, startIndex, daysCount, bookedDays, list,
             year = year + 1;
             month = 0;
         }
-        bookedDays[w] = new bookedDay(year,
+        bookedDays[w] = new BookedDay(year,
                                         monthArray[month],
                                         +calendarDayValue[i].innerText);
         for (j=0; j< list.length; j++){
@@ -323,5 +324,27 @@ function addBookedDays(ref, todayIndex, startIndex, daysCount, bookedDays, list,
         }
         w++;
     }
-    //console.log(bookedDays);
+}
+
+function getSelectedDate(day){
+    selectedDay = +day;
+    monthAndYear = document.querySelector('.month').innerText;
+    relatedMonth = months.indexOf(monthAndYear.split(" ")[0]);
+    relatedYear = +monthAndYear.split(" ")[1];
+    selectedDate = new Date(relatedYear,relatedMonth,selectedDay).toLocaleDateString('fr-FR',{
+        weekday:'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+    });
+    //return selectedDate;
+    console.log(`New selected date :
+    ${selectedDate}`);
+}
+
+
+function pushBookedDay(eventYear, eventMonthString, eventDate){
+    bookedDaysList.push(new BookedDay(eventYear, eventMonthString, eventDate));
+    calendarBody.innerHTML="";
+    loadCalendar(monthReference);
 }
