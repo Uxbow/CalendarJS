@@ -45,35 +45,33 @@ class BookedDay{
     }
 }
 
-
-let bookedDaysList = [];
 // speaks for itself
+let bookedDaysList = [];
+
 // Set of dates showing events
-// let bookedDaysList = [new BookedDay(2021, 'Juillet', 10),
-//                         new BookedDay(2021, 'Juillet', 17),
-//                         new BookedDay(2021, 'Juillet', 23),
-//                         new BookedDay(2021, 'Juillet', 31),
-//                         new BookedDay(2021, 'Août', 7),
-//                         new BookedDay(2021, 'Août', 15),
-//                         new BookedDay(2021, 'Octobre', 11),
-//                         new BookedDay(2021, 'Novembre', 10),
-//                         new BookedDay(2021, 'Décembre', 3),
-//                         new BookedDay(2021, 'Décembre', 4),
-//                         new BookedDay(2021, 'Décembre', 31),
-//                         new BookedDay(2022, 'Janvier', 1),
-//                         new BookedDay(2022, 'Janvier', 7),
-//                         new BookedDay(2022, 'Janvier', 15),
-//                         new BookedDay(2022, 'Janvier', 31),
-//                         new BookedDay(2022, 'Février', 13),
-//                          new BookedDay(2022, 'Décembre', 29),
-//                          new BookedDay(2023, 'Janvier', 1),
-//                          new BookedDay(2023, 'Janvier', 6),
-//                          new BookedDay(2023, 'Décembre', 31),
-//                          new BookedDay(2024, 'Janvier', 1),
-//                          new BookedDay(2024, 'Janvier', 6)];
+bookedDaysList = [new BookedDay(2021, 'Juillet', 10),
+                    new BookedDay(2021, 'Juillet', 17),
+                    new BookedDay(2021, 'Juillet', 23),
+                    new BookedDay(2021, 'Juillet', 31),
+                    new BookedDay(2021, 'Août', 7),
+                    new BookedDay(2021, 'Août', 15),
+                    new BookedDay(2021, 'Octobre', 11),
+                    new BookedDay(2021, 'Novembre', 10),
+                    new BookedDay(2021, 'Décembre', 3),
+                    new BookedDay(2021, 'Décembre', 4),
+                    new BookedDay(2021, 'Décembre', 31),
+                    new BookedDay(2022, 'Janvier', 1),
+                    new BookedDay(2022, 'Janvier', 7),
+                    new BookedDay(2022, 'Janvier', 15),
+                    new BookedDay(2022, 'Janvier', 31),
+                    new BookedDay(2022, 'Février', 13),
+                    new BookedDay(2022, 'Décembre', 29),
+                    new BookedDay(2023, 'Janvier', 1),
+                    new BookedDay(2023, 'Janvier', 6),
+                    new BookedDay(2023, 'Décembre', 31),
+                    new BookedDay(2024, 'Janvier', 1),
+                    new BookedDay(2024, 'Janvier', 6)];
 
-
-//addBookedDays(2021, 'Décembre', 31);
 
 // To fire click events, month change and calendar upadate
 const calendarLeftArrow = document.getElementById('CalendarLeftArrow');
