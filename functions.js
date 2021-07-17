@@ -351,6 +351,7 @@ function pushBookedDay(newDate){
     bookedDaysList.push(new BookedDay(eventYear, eventMonthString, eventDate));
     calendarBody.innerHTML="";
     loadCalendar(monthReference);
+    reservationDate = undefined;
 }
 
 function displaySelectedDay(reservationDate, calendarMonthAndYear){
