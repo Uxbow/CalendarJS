@@ -3,7 +3,15 @@
 //                                       CALENDAR JS
 //
 //
+//   
 //
+//  ==> reservationDate is the selected date in standard format
+//  ==> pushBookedDay(new Date()) 
+//
+//
+//   *************************************************************************
+//
+//   
 //   monthReference : Current month reference offset for last month and next month 
 //                    calculations
 //   weekdays : Array to match with calendar display from Monday to Sunday instead
@@ -35,7 +43,7 @@ let weekdays = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi','samedi', 'dim
 let months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai','Juin',
                 'Juillet','Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
 let calendarDayValue, selectedDaysCircles;
-
+let reservationDate;
 
 class BookedDay{
     constructor(eventYear, eventMonth, eventDay){
@@ -49,28 +57,26 @@ class BookedDay{
 let bookedDaysList = [];
 
 // Set of dates showing events
-bookedDaysList = [new BookedDay(2021, 'Juillet', 10),
-                    new BookedDay(2021, 'Juillet', 17),
-                    new BookedDay(2021, 'Juillet', 23),
-                    new BookedDay(2021, 'Juillet', 31),
-                    new BookedDay(2021, 'Août', 7),
-                    new BookedDay(2021, 'Août', 15),
-                    new BookedDay(2021, 'Octobre', 11),
-                    new BookedDay(2021, 'Novembre', 10),
-                    new BookedDay(2021, 'Décembre', 3),
-                    new BookedDay(2021, 'Décembre', 4),
-                    new BookedDay(2021, 'Décembre', 31),
-                    new BookedDay(2022, 'Janvier', 1),
-                    new BookedDay(2022, 'Janvier', 7),
-                    new BookedDay(2022, 'Janvier', 15),
-                    new BookedDay(2022, 'Janvier', 31),
-                    new BookedDay(2022, 'Février', 13),
-                    new BookedDay(2022, 'Décembre', 29),
-                    new BookedDay(2023, 'Janvier', 1),
-                    new BookedDay(2023, 'Janvier', 6),
-                    new BookedDay(2023, 'Décembre', 31),
-                    new BookedDay(2024, 'Janvier', 1),
-                    new BookedDay(2024, 'Janvier', 6)];
+// bookedDaysList = [  new BookedDay(2021, 'Juillet', 23),
+//                     new BookedDay(2021, 'Juillet', 31),
+//                     new BookedDay(2021, 'Août', 7),
+//                     new BookedDay(2021, 'Août', 15),
+//                     new BookedDay(2021, 'Octobre', 11),
+//                     new BookedDay(2021, 'Novembre', 10),
+//                     new BookedDay(2021, 'Décembre', 3),
+//                     new BookedDay(2021, 'Décembre', 4),
+//                     new BookedDay(2021, 'Décembre', 31),
+//                     new BookedDay(2022, 'Janvier', 1),
+//                     new BookedDay(2022, 'Janvier', 7),
+//                     new BookedDay(2022, 'Janvier', 15),
+//                     new BookedDay(2022, 'Janvier', 31),
+//                     new BookedDay(2022, 'Février', 13),
+//                     new BookedDay(2022, 'Décembre', 29),
+//                     new BookedDay(2023, 'Janvier', 1),
+//                     new BookedDay(2023, 'Janvier', 6),
+//                     new BookedDay(2023, 'Décembre', 31),
+//                     new BookedDay(2024, 'Janvier', 1),
+//                     new BookedDay(2024, 'Janvier', 6)];
 
 
 // To fire click events, month change and calendar upadate
@@ -204,7 +210,7 @@ function toggleSelection(){
             circle.classList.remove('selectedDate');
         }
         this.parentElement.classList.add('selectedDate');
-        getSelectedDate(this.innerText);
+        reservationDate = getSelectedDate(this.innerText);
     }
 }
 
@@ -329,22 +335,17 @@ function getSelectedDate(day){
     monthAndYear = document.querySelector('.month').innerText;
     relatedMonth = months.indexOf(monthAndYear.split(" ")[0]);
     relatedYear = +monthAndYear.split(" ")[1];
-    selectedDate = new Date(relatedYear,relatedMonth,selectedDay).toLocaleDateString('fr-FR',{
-        weekday:'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-    });
-    //return selectedDate;
-    console.log(`New selected date :
-    ${selectedDate}`);
+    selectedDate = new Date(relatedYear,relatedMonth,selectedDay);
+    return selectedDate;
 }
 
 
-function pushBookedDay(eventYear, eventMonthString, eventDate){
+function pushBookedDay(newDate){
+    eventYear = newDate.getFullYear();
+    eventMonthString = months[newDate.getMonth()];
+    eventDate = newDate.getDate();
     bookedDaysList.push(new BookedDay(eventYear, eventMonthString, eventDate));
     calendarBody.innerHTML="";
     loadCalendar(monthReference);
-    console.log(`New booked day added:
-    ${eventDate} ${eventMonthString} ${eventYear}`)
+    //console.log(`New booked day added: ${eventYear} ${eventMonthString} ${eventDate}`);
 }
