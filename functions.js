@@ -42,8 +42,8 @@ let monthReference = 0;
 let weekdays = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi','samedi', 'dimanche'];
 let months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai','Juin',
                 'Juillet','Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
-let calendarDayValue, selectedDaysCircles;
-let reservationDate;
+let calendarDayValue, selectedDaysCircles, reservationDate,monthStartingDayIndex;
+const calendarMonthAndYear = document.querySelector('.month');
 
 class BookedDay{
     constructor(eventYear, eventMonth, eventDay){
@@ -97,12 +97,14 @@ calendarLeftArrow.addEventListener('click', ()=>{
         monthReference = monthReference -1;
         calendarBody.innerHTML='';
         loadCalendar(monthReference);
+        displaySelectedDay(reservationDate,calendarMonthAndYear);
     }
 });
 calendarRightArrow.addEventListener('click', ()=>{
     monthReference = monthReference +1;
     calendarBody.innerHTML='';
     loadCalendar(monthReference);
+    displaySelectedDay(reservationDate,calendarMonthAndYear);
 });
 
 
@@ -148,7 +150,7 @@ function loadCalendar(monthOffset){
     });
     const firstDayOfTheMonth = firstDayOfTheMonthFull.split(' ')[0];
     const todayNameString = todayNameStringFull.split(' ')[0];
-    let monthStartingDayIndex = weekdays.indexOf(firstDayOfTheMonth);
+    monthStartingDayIndex = weekdays.indexOf(firstDayOfTheMonth);
 
     
     //GETTING LAST MONTH NUMBER OF DAYS
@@ -179,7 +181,7 @@ function loadCalendar(monthOffset){
     setCalendarDayList(numberOfDaysOfLastMonth,todayDateIndex, monthStartingDayIndex, numberOfDaysInMonth);
 
     // UPDATING MONTH AND YEAR ON CALENDAR HEADER
-    document.querySelector('.month').innerText = `${months[thisMonth]} ${thisYear}`;
+    calendarMonthAndYear.innerText = `${months[thisMonth]} ${thisYear}`;
 
     //ADDING BOOKED DAYS
     let calendarDayBookedItems = [];
@@ -204,6 +206,7 @@ function updateAvailableDate(){
 function toggleSelection(){
     if(this.parentElement.classList.contains('selectedDate')){
         this.parentElement.classList.remove('selectedDate');
+        reservationDate = undefined;
     }
     else{
         for(circle of selectedDaysCircles){
@@ -212,6 +215,7 @@ function toggleSelection(){
         this.parentElement.classList.add('selectedDate');
         reservationDate = getSelectedDate(this.innerText);
     }
+    return reservationDate;
 }
 
 
@@ -332,7 +336,7 @@ function addBookedDays(ref, todayIndex, startIndex, daysCount, bookedDays, list,
 
 function getSelectedDate(day){
     selectedDay = +day;
-    monthAndYear = document.querySelector('.month').innerText;
+    monthAndYear = calendarMonthAndYear.innerText;
     relatedMonth = months.indexOf(monthAndYear.split(" ")[0]);
     relatedYear = +monthAndYear.split(" ")[1];
     selectedDate = new Date(relatedYear,relatedMonth,selectedDay);
@@ -347,5 +351,17 @@ function pushBookedDay(newDate){
     bookedDaysList.push(new BookedDay(eventYear, eventMonthString, eventDate));
     calendarBody.innerHTML="";
     loadCalendar(monthReference);
-    //console.log(`New booked day added: ${eventYear} ${eventMonthString} ${eventDate}`);
+}
+
+function displaySelectedDay(reservationDate, calendarMonthAndYear){
+    monthAndYear = calendarMonthAndYear.innerText;
+    relatedMonth = months.indexOf(monthAndYear.split(" ")[0]);
+    relatedYear = +monthAndYear.split(" ")[1];
+    if(reservationDate!== undefined){
+        if (reservationDate.getFullYear() === relatedYear){
+            if (reservationDate.getMonth() ===relatedMonth){
+                calendarDayValue[monthStartingDayIndex+reservationDate.getDate()-1].parentElement.classList.add('selectedDate');
+            }
+        }
+    }
 }
